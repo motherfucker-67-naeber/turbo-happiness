@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Кешью</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #f4f5f7;
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Шапка */
+    .header {
+      background-color: #ffffff;
+      padding: 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    }
+
+    .logo-img {
+      height: 38px;
+      width: auto;
+      object-fit: contain;
+      display: block;
+    }
+
+    .brand-title {
+      font-size: 30px;
+      font-weight: 500;
+      color: #111;
+    }
+
+    /* Основной контейнер */
+    .main-container {
+      flex: 1;
+      padding: 20px;
+      max-width: 420px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* Карточка */
+    .card {
+      background-color: #ffffff;
+      border-radius: 12px;
+      padding: 28px 24px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Контейнер QR-кода */
+    .qr-wrapper {
+      position: relative;
+      width: 240px;
+      height: 240px;
+      margin: 0 auto 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .qr-image {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      image-rendering: pixelated;
+    }
+
+    /* Статичный бирюзовый кружок */
+.status-badge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 96px;
+  height: 96px;
+  background-color: #31ab8f;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+/* Стили жирной галочки и привязка анимации */
+.checkmark-svg {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 14;              /* Точная толщина штриха */
+  stroke-linecap: square;         /* Прямые срезанные края */
+  stroke-linejoin: miter;         /* Чёткий острый угол в вершине */
+  transform-origin: 50% 50%;      /* Вращение строго вокруг геометрического центра */
+  animation: exactTicketCheckmark 2.15s ease-in-out infinite;
+}
+/* Точные фазы: оборот против часовой со сжатием + маятниковое покачивание */
+@keyframes exactTicketCheckmark {
+  /* 0% — 56%: Полный оборот против часовой стрелки (0° -> -360°) со сжатием */
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  28% {
+    transform: rotate(180deg) scale(0.45); /* Максимальное сжатие в перевёрнутом виде */
+  }
+  56% {
+    transform: rotate(360deg) scale(0.88); /* Завершение оборота */
+  }
+  /* 56% — 100%: Маятниковое раскачивание и окончательный возврат к scale(1) */
+  72% {
+    transform: rotate(374deg) scale(1); /* Откат влево на ~14° */
+  }
+  86% {
+      transform: rotate(322deg) scale(1); /* Отклонение вправо на ~38° */
+  }
+  100% {
+    transform: rotate(360deg) scale(1);   /* Фиксация в ровном положении */
+  }
+}
+    /* Текстовые поля */
+    .field {
+      margin-bottom: 16px;
+      line-height: 1.4;
+    }
+
+    .field:last-child {
+      margin-bottom: 0;
+    }
+
+    .field-label {
+      font-size: 16px;
+      color: #555;
+      margin-bottom: 2px;
+    }
+
+    .field-value {
+      font-size: 19px;
+      color: #222;
+    }
+
+    /* Подвал */
+    .footer {
+      background-color: #2b7bc6;
+      color: #ffffff;
+      text-align: center;
+      padding: 28px 16px;
+      font-size: 16px;
+      line-height: 1.6;
+      margin-top: 24px;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <img src="cashew-logo.svg" alt="Логотип" class="logo-img">
+  </header>
+
+  <main class="main-container">
+    <div class="card">
+      <div class="qr-wrapper">
+        <!-- Укажите путь к вашей картинке QR-кода -->
+        <img src="qr.png" alt="QR-код" class="qr-image">
+        
+        <div class="status-badge">
+  <svg viewBox="0 0 100 100" class="checkmark-svg">
+    <polyline points="20 52 42 74 81 29"></polyline>
+  </svg>
+</div>
+      </div>
+
+      <div class="field">
+        <div class="field-label">Получатель:</div>
+        <div class="field-value">
+          Оплата проезда в троллейбусе, гар. номер 24 (билет на одну поездку: 1.05 руб)<br>
+          г. Брест<br>
+          КУП Брестский общественный транспорт
+        </div>
+      </div>
+
+      <div class="field">
+  	<div class="field-label">Активен с:</div>
+  	<div class="field-value" id="active-from">--.--.---- --:--</div>
+      </div>
+
+      <div class="field">
+  	<div class="field-label">Активен до:</div>
+  	<div class="field-value" id="active-until">--.--.---- --:--</div>
+      </div>
+
+      <div class="field">
+        <div class="field-label">Описание:</div>
+        <div class="field-value">#7ebafdb36bbaabc8#</div>
+      </div>
+
+      <div class="field">
+        <div class="field-label">Цена:</div>
+        <div class="field-value">1.05 бел. руб.</div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    Информация о кешью:<br>
+    info@cashew.me
+  </footer>
+
+<script>
+  function formatDateTime(date) {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Месяцы в JS начинаются с 0
+    const year = date.getFullYear();
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+
+    return `${day}.${month}.${year} ${hours}:${minutes}`;
+  }
+
+  // Текущее время минус 10 минут
+  const now = new Date();
+  const activeFrom = new Date(now.getTime() - 10 * 60 * 1000);
+
+  // Время "Активен с" плюс 1 час (60 минут)
+  const activeUntil = new Date(activeFrom.getTime() + 60 * 60 * 1000);
+
+  // Подставляем значения в HTML
+  document.getElementById('active-from').textContent = formatDateTime(activeFrom);
+  document.getElementById('active-until').textContent = formatDateTime(activeUntil);
+</script>
+</body>
+</html>
